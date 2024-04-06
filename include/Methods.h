@@ -13,6 +13,10 @@ public:
   SortMethod(staticSequence<Key>& seq, int s) : sequence(seq), size(s) {}
 
   virtual void Sort() const = 0;
+
+  staticSequence<Key> getSequence() {
+    return this->sequence;
+  }
 };
 
 template<typename Key>
@@ -47,11 +51,16 @@ public:
 
 template<typename Key>
 class ShelSort : public SortMethod<Key> {
+private:
+  double alpha;
+
 public:
-  ShelSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
+  ShelSort(staticSequence<Key>& seq, int s, double alpha_) : SortMethod<Key>(seq, s) {
+    alpha = alpha_;
+  }
 
   void Sort() const override {
-    this->sequence = shellSort(this->sequence, this->size);
+    this->sequence = shellSort(this->sequence, this->size, this->alpha);
   }
 };
 

@@ -35,7 +35,7 @@ public:
 
   // Método para inserción
   bool insert(const Key& k) override {
-    if (keyVector.size < maxSize)
+    if (keyVector.size() < maxSize)
     {
       keyVector.push_back(k);
       return true;
@@ -48,7 +48,29 @@ public:
     if (index >= 0 && index < keyVector.size()) {
       return keyVector[index];
     } else {
-      throw std::out_of_range('La posición a la que intenta acceder está fuera de rango.');
+      throw std::out_of_range("La posición a la que intenta acceder está fuera de rango.");
     }
   }
+
+  // Sobrecarga del operador de asignación
+  staticSequence& operator=(const staticSequence& other) {
+    keyVector = other.keyVector;
+    maxSize = other.maxSize;
+    return *this;
+  }
+
+  Key& at(int index) {
+    if (index >= 0 && index < keyVector.size()) {
+      return keyVector.at(index);
+    } else {
+      throw std::out_of_range("La posición a la que intenta acceder está fuera de rango.");
+    }
+  }
+
+  void swap(int index1, int index2) {
+    Key temp = this->keyVector[index1];
+    this->keyVector[index1] = this->keyVector[index2];
+    this->keyVector[index2] = temp;
+  }
+
 };

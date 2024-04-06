@@ -1,6 +1,8 @@
+#pragma once
+
 #include <iostream>
 #include <vector>
-#include <cmath> // Para usar pow en RadixSort
+#include <cmath>
 #include "Sequence.h" // Suponiendo que tienes la definición de staticSequence en un archivo header separado
 
 // Función auxiliar para imprimir una secuencia
@@ -14,7 +16,9 @@ void printSequence(const staticSequence<Key>& sequence, int size) {
 
 // Implementación del algoritmo de selección
 template<typename Key>
-void selectionSort(staticSequence<Key>& sequence, int size) {
+staticSequence<Key> selectionSort(staticSequence<Key>& sequenceOriginal, int size) {
+  staticSequence<Key> sequence = sequenceOriginal;
+
   for (int i = 0; i < size - 1; ++i) {
     int minIndex = i;
     for (int j = i + 1; j < size; ++j) {
@@ -22,8 +26,10 @@ void selectionSort(staticSequence<Key>& sequence, int size) {
         minIndex = j;
       }
     }
-    std::swap(sequence[i], sequence[minIndex]);
+    sequence.swap(i, minIndex);
   }
+
+  return sequence;
 }
 
 // Implementación del algoritmo de ordenación rápida (QuickSort)
@@ -41,18 +47,20 @@ void quickSortHelper(staticSequence<Key>& sequence, int low, int high) {
         --j;
       }
       if (i < j) {
-        std::swap(sequence[i], sequence[j]);
+        sequence.swap(i, j);
       }
     }
-    std::swap(sequence[j], sequence[pivot]);
+    sequence.swap(j, pivot);
     quickSortHelper(sequence, low, j - 1);
     quickSortHelper(sequence, j + 1, high);
   }
 }
 
 template<typename Key>
-void quickSort(staticSequence<Key>& sequence, int size) {
+staticSequence<Key> quickSort(staticSequence<Key>& sequenceOriginal, int size) {
+  staticSequence<Key> sequence = sequenceOriginal;
   quickSortHelper(sequence, 0, size - 1);
+  return sequence;
 }
 
 // Implementación del algoritmo de ordenación por montículos (HeapSort)
@@ -71,43 +79,52 @@ void heapify(staticSequence<Key>& sequence, int size, int i) {
   }
 
   if (largest != i) {
-    std::swap(sequence[i], sequence[largest]);
+    sequence.swap(i, largest);
     heapify(sequence, size, largest);
   }
 }
 
 template<typename Key>
-void heapSort(staticSequence<Key>& sequence, int size) {
+staticSequence<Key> heapSort(staticSequence<Key>& sequenceOriginal, int size) {
+  staticSequence<Key> sequence = sequenceOriginal;
+
   for (int i = size / 2 - 1; i >= 0; --i) {
     heapify(sequence, size, i);
   }
   for (int i = size - 1; i > 0; --i) {
-    std::swap(sequence[0], sequence[i]);
+    sequence.swap(0, i);
     heapify(sequence, i, 0);
   }
+
+  return sequence;
 }
 
 // Implementación del algoritmo de ordenación ShellSort
 template<typename Key>
-void shellSort(staticSequence<Key>& sequence, int size, double alpha) {
+staticSequence<Key> shellSort(staticSequence<Key>& sequenceOriginal, int size, double alpha) {
+  staticSequence<Key> sequence = sequenceOriginal;
+  
   int gap = size / 2;
   while (gap > 0) {
     for (int i = gap; i < size; ++i) {
-      Key temp = sequence[i];
+      Key temp = sequence.at(i);
       int j;
       for (j = i; j >= gap && sequence[j - gap] > temp; j -= gap) {
-        sequence[j] = sequence[j - gap];
+        sequence.at(j) = sequence.at(j - gap);
       }
-      sequence[j] = temp;
+      sequence.at(j) = temp;
     }
     gap *= alpha;
   }
+
+  return sequence;
 }
 
 // Implementación del algoritmo de ordenación RadixSort
 template<typename Key>
-void radixSort(staticSequence<Key>& sequence, int size) {
-  if (size <= 1) return;
+staticSequence<Key> radixSort(staticSequence<Key>& sequenceOriginal, int size) {
+
+  staticSequence<Key> sequence = sequenceOriginal;
 
   Key maxVal = sequence[0];
   for (int i = 1; i < size; ++i) {
@@ -134,7 +151,9 @@ void radixSort(staticSequence<Key>& sequence, int size) {
     }
 
     for (int i = 0; i < size; ++i) {
-      sequence[i] = output[i];
+      sequence.at(i) = output[i];
     }
   }
+
+  return sequence;
 };
