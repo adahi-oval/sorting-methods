@@ -5,15 +5,6 @@
 #include <cmath>
 #include "Sequence.h" // Suponiendo que tienes la definición de staticSequence en un archivo header separado
 
-// Función auxiliar para imprimir una secuencia
-template<typename Key>
-void printSequence(const staticSequence<Key>& sequence, int size) {
-  for (int i = 0; i < size; ++i) {
-    std::cout << sequence[i] << " ";
-  }
-  std::cout << std::endl;
-}
-
 // Implementación del algoritmo de selección
 template<typename Key>
 staticSequence<Key> selectionSort(staticSequence<Key>& sequenceOriginal, int size) {
@@ -27,6 +18,7 @@ staticSequence<Key> selectionSort(staticSequence<Key>& sequenceOriginal, int siz
       }
     }
     sequence.swap(i, minIndex);
+    sequence.trace();
   }
 
   return sequence;
@@ -51,6 +43,7 @@ void quickSortHelper(staticSequence<Key>& sequence, int low, int high) {
       }
     }
     sequence.swap(j, pivot);
+    sequence.trace();
     quickSortHelper(sequence, low, j - 1);
     quickSortHelper(sequence, j + 1, high);
   }
@@ -80,6 +73,7 @@ void heapify(staticSequence<Key>& sequence, int size, int i) {
 
   if (largest != i) {
     sequence.swap(i, largest);
+    sequence.trace();
     heapify(sequence, size, largest);
   }
 }
@@ -93,6 +87,7 @@ staticSequence<Key> heapSort(staticSequence<Key>& sequenceOriginal, int size) {
   }
   for (int i = size - 1; i > 0; --i) {
     sequence.swap(0, i);
+    sequence.trace();
     heapify(sequence, i, 0);
   }
 
@@ -115,6 +110,7 @@ staticSequence<Key> shellSort(staticSequence<Key>& sequenceOriginal, int size, d
       sequence.at(j) = temp;
     }
     gap *= alpha;
+    sequence.trace();
   }
 
   return sequence;
@@ -153,6 +149,8 @@ staticSequence<Key> radixSort(staticSequence<Key>& sequenceOriginal, int size) {
     for (int i = 0; i < size; ++i) {
       sequence.at(i) = output[i];
     }
+
+    sequence.trace();
   }
 
   return sequence;

@@ -17,6 +17,11 @@ public:
   staticSequence<Key> getSequence() {
     return this->sequence;
   }
+
+  void print() {
+    this->sequence.print();
+  }
+
 };
 
 template<typename Key>
@@ -30,9 +35,9 @@ public:
 };
 
 template<typename Key>
-class QuicSort : public SortMethod<Key> {
+class QuickSort : public SortMethod<Key> {
 public:
-  QuicSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
+  QuickSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
 
   void Sort() const override {
     this->sequence = quickSort(this->sequence, this->size);
@@ -40,9 +45,9 @@ public:
 };
 
 template<typename Key>
-class HepSort : public SortMethod<Key> {
+class HeapSort : public SortMethod<Key> {
 public:
-  HepSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
+  HeapSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
 
   void Sort() const override {
     this->sequence = heapSort(this->sequence, this->size);
@@ -50,13 +55,18 @@ public:
 };
 
 template<typename Key>
-class ShelSort : public SortMethod<Key> {
+class ShellSort : public SortMethod<Key> {
 private:
   double alpha;
 
 public:
-  ShelSort(staticSequence<Key>& seq, int s, double alpha_) : SortMethod<Key>(seq, s) {
-    alpha = alpha_;
+  ShellSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {
+    std::cout << "Introduzca alpha (0 < alpha < 1): " << std::endl;
+    std::cin >> alpha;
+    if (alpha <= 0 || alpha >= 1)
+    {
+      throw std::out_of_range("Alpha debe estar entre 0 y 1.");
+    }
   }
 
   void Sort() const override {
@@ -65,9 +75,9 @@ public:
 };
 
 template<typename Key>
-class RadiSort : public SortMethod<Key> {
+class RadixSort : public SortMethod<Key> {
 public:
-  RadiSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
+  RadixSort(staticSequence<Key>& seq, int s) : SortMethod<Key>(seq, s) {}
 
   void Sort() const override {
     this->sequence = radixSort(this->sequence, this->size);

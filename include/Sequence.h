@@ -16,11 +16,17 @@ class staticSequence : public Sequence<Key> {
 private:
   std::vector<Key> keyVector;
   int maxSize;
+  bool traceFlag = false;
+  int iterationCount = 0;
 
 public:
 
   staticSequence(int size) {
     maxSize = size;
+  }
+
+  void setTrace(bool trace_) {
+    this->traceFlag = trace_;
   }
 
   // Método de búsqueda
@@ -59,6 +65,7 @@ public:
     return *this;
   }
 
+  // Método at para obtener referencias modificables
   Key& at(int index) {
     if (index >= 0 && index < keyVector.size()) {
       return keyVector.at(index);
@@ -67,10 +74,29 @@ public:
     }
   }
 
+  // Método swap, para los intercambios en el vector interno de sequence
   void swap(int index1, int index2) {
     Key temp = this->keyVector[index1];
     this->keyVector[index1] = this->keyVector[index2];
     this->keyVector[index2] = temp;
+  }
+
+  // Método para imprimir la secuencia
+  void print() {
+  for (int i = 0; i < this->maxSize; ++i) {
+    std::cout << this->at(i) << " ";
+  }
+  std::cout << std::endl;
+  }
+
+  // Método auxiliar para hacer la traza más simple
+  void trace() {
+    if (this->traceFlag)
+    {
+      std::cout << this->iterationCount << ": ";
+      this->print();
+      this->iterationCount++;
+    }
   }
 
 };
